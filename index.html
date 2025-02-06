@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthy Eating Tracker</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-image: url('https://assets.clevelandclinic.org/transform/9cbcc77b-93b7-472e-838d-ec0d5f2f9fbd/heart-healthy-foods-1279763992');
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 3em;
+        }
+        #progress {
+            width: 80%;
+            height: 30px;
+            margin-top: 20px;
+            background-color: #ddd;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 15px;
+            transition: width 0.3s ease-in-out;
+        }
+        .buttons-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .checkbox-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .checkbox-container label {
+            margin: 5px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .content {
+            width: 60%;
+            padding: 20px;
+        }
+        .image-container {
+            width: 35%;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .emoji {
+            font-size: 2em;
+            margin: 10px;
+        }
+        .scroll-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
+        .scroll-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .scroll-section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .question-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
+        .question-section p {
+            font-size: 1.2em;
+        }
+        .quiz-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .quiz-button {
+            font-size: 1.5em;
+            padding: 12px 30px;
+            background-color: #ffeb3b;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .quiz-button:hover {
+            background-color: #fdd835;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Healthy Eating Tracker</h1>
+        <div id="progress">
+            <div id="progress-bar"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <div class="buttons-container">
+                <button class="button" id="monday-button" onclick="updateProgress(10, 'monday')" disabled>🍎 Healthy Monday</button>
+                <button class="button" id="tuesday-button" onclick="updateProgress(10, 'tuesday')" disabled>🥦 Healthy Tuesday</button>
+                <button class="button" id="wednesday-button" onclick="updateProgress(10, 'wednesday')" disabled>🍓 Healthy Wednesday</button>
+                <button class="button" id="thursday-button" onclick="updateProgress(10, 'thursday')" disabled>🍊 Healthy Thursday</button>
+                <button class="button" id="friday-button" onclick="updateProgress(10, 'friday')" disabled>🥑 Healthy Friday</button>
+            </div>
+
+            <div class="checkbox-container" id="veg-checkbox-container">
+                <label for="veg-checkbox">🍽️ Veg Option</label>
+                <input type="checkbox" id="veg-checkbox" onclick="updateVegStatus(true)">
+            </div>
+            
+            <div class="checkbox-container" id="nonveg-checkbox-container">
+                <label for="nonveg-checkbox">🍗 Non-Veg Option</label>
+                <input type="checkbox" id="nonveg-checkbox" onclick="updateVegStatus(false)">
+            </div>
+
+            <div class="question-section">
+                <h2>Why Should We Eat Healthy Food? 🤔</h2>
+                <p>Healthy eating helps you maintain a healthy weight, boosts your energy levels, improves your mood, and helps prevent diseases. 🍎</p>
+            </div>
+
+            <div class="question-section">
+                <h2>Why Should We Avoid Unhealthy Food? 🚫</h2>
+                <p>Unhealthy foods, especially those high in sugar and fats, can lead to weight gain, heart diseases, and low energy levels. 🍔</p>
+            </div>
+
+            <!-- Add your other question sections here -->
+
+            <div class="question-section">
+                <h2>How Healthy Is Your Diet This Week? 🍴</h2>
+                <button class="quiz-button" onclick="calculateWeeklyHealth()">🧐 Evaluate Your Week</button>
+                <p id="weekly-feedback" style="font-size: 1.2em; margin-top: 10px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="quiz-container">
+        <button class="quiz-button" onclick="window.location.href='https://medlineplus.gov/ency/quiz/000330_25.htm?quiz=1'">🎮 Take the Quiz!</button>
+    </div>
+
+    <script>
+        let points = 0;
+        let dayProgress = {
+            monday: false,
+            tuesday: false,
+            wednesday: false,
+            thursday: false,
+            friday: false
+        };
+        
+        let dayHealth = {
+            monday: 'unhealthy',
+            tuesday: 'unhealthy',
+            wednesday: 'unhealthy',
+            thursday: 'unhealthy',
+            friday: 'unhealthy'
+        };
+
+        // Function to handle the progress
+        function updateProgress(pointsAdded, day) {
+            if (!dayProgress[day]) {
+                points += pointsAdded;
+                dayProgress[day] = true;
+                const progressBar = document.getElementById("progress-bar");
+                progressBar.style.width = `${Math.min(points, 100)}%`;
+
+                // Disable the current button and enable the next day's button
+                document.getElementById(`${day}-button`).disabled = true;
+
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+                const currentDayIndex = days.indexOf(day);
+
+                if (currentDayIndex < 4) {
+                    document.getElementById(`${days[currentDayIndex + 1]}-button`).disabled = false;
+                }
+
+                // Display Veg/Non-Veg options after clicking a button
+                document.getElementById("veg-checkbox-container").style.display = "flex";
+                document.getElementById("nonveg-checkbox-container").style.display = "flex";
+            }
+        }
+
+        // Update the progress based on veg/non-veg selection
+        function updateVegStatus(isVeg) {
+            const currentDay = Object.keys(dayProgress).find(day => !dayProgress[day]);
+
+            if (currentDay) {
+                dayHealth[currentDay] = isVeg ? 'healthy' : 'unhealthy';
+                document.getElementById("veg-checkbox-container").style.display = "none";
+                document.getElementById("nonveg-checkbox-container").style.display = "none";
+            }
+        }
+
+        // Calculate the weekly health progress and give feedback
+        function calculateWeeklyHealth() {
+            let healthyDays = 0;
+            for (let day in dayHealth) {
+                if (dayHealth[day] === 'healthy') {
+                    healthyDays++;
+                }
+            }
+
+            let feedback = "";
+            if (healthyDays === 5) {
+                feedback = "Great job! You've eaten healthy all week! 🌟";
+            } else if (healthyDays >= 3) {
+                feedback = "You're doing well! Try to eat healthier on the remaining days! 💪";
+            } else {
+                feedback = "It looks like you need to improve your diet. Focus on healthy meals next week! 🍏";
+            }
+
+            document.getElementById("weekly-feedback").textContent = feedback;
+        }
+    </script>
+</body>
+</html>
